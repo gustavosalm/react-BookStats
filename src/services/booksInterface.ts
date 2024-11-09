@@ -7,5 +7,7 @@ export interface Books {
             thumbnail: string;
         };
         title: string;
+        averageRating: number;
+        categories: string[];
     }
 }
