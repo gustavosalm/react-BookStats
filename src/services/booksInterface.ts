@@ -1,4 +1,4 @@
-export interface News {
+export interface Books {
     id: string;
     volumeInfo: {
         authors: string[];
