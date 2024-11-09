@@ -1,10 +1,10 @@
-import './App.css'
+import MainPage from './pages/MainPage'
 
 function App() {
 
   return (
     <>
-      <h1>Book Stats Site</h1>
+      <MainPage />
     </>
   )
 }
