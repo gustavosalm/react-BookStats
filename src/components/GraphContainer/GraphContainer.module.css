@@ -1,0 +1,12 @@
+.graphsPaper {
+    position: fixed;
+    right: 2rem;
+    top: 6rem;
+    height: calc(100vh - 8rem);
+    width: 25%;
+    background-color: #f1f1f1;
+    padding: .5rem 1rem;
+}
+
+/* .graph {
+} */
