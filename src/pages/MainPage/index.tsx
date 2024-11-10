@@ -4,6 +4,7 @@ import HeadBar from '../../components/HeadBar/HeadBar';
 import { Books } from '../../services/booksInterface';
 import BookInfo from '../../components/BookInfo/BookInfo';
 import styles from './styles.module.css'
+import GraphContainer from '../../components/GraphContainer/GraphContainer';
 
 const MainPage = () => {
     const [books, setBooks] = useState<Books[]>([]);
@@ -69,6 +70,7 @@ const MainPage = () => {
                         <BookInfo key={ind} book={book} />
                     )
                 })}
+                <GraphContainer />
             </div>
         </>
     )
