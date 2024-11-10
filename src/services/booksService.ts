@@ -27,7 +27,7 @@ export const getBooksByAuthor = async (author: string) => {
 }
 
 export const getBooksByCategory = async (category: string) => {
-    let url = `volumes?q=insubject:"${category}"maxResults=30&printType=books&orderBy=relevance`;
+    let url = `volumes?q=subject:"${category}"maxResults=30&printType=books&orderBy=relevance`;
     const response = await api.get(url);
 
     return response;
