@@ -8,27 +8,32 @@ import styles from './styles.module.css'
 const MainPage = () => {
     const [books, setBooks] = useState<Books[]>([]);
     const [filter, setFilter] = useState('');
+    const [currentState, setCurrent] = useState('');
     
     useEffect(() => {
-        getBooksList()
+        getBooksList();
     }, [filter]);
 
-    const _handleKeyDown = async (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            const searchText = (e.target as HTMLInputElement).value
-            if (searchText === '')
-                return;
-            const titleResponse = await getBooksByTitle(searchText);
-            const authorResponse = await getBooksByAuthor(searchText);
-            const fullList = titleResponse.data.items.concat(authorResponse.data.items);
-            setBooksList(fullList);
-        }
+    const handleSearch = async (searchText: string) => {
+        if (searchText === '')
+            getBooksList();
+        const titleResponse = await getBooksByTitle(searchText);
+        const authorResponse = await getBooksByAuthor(searchText);
+        const fullList = titleResponse.data.items.concat(authorResponse.data.items);
+        setBooksList(fullList);
+        setCurrent('search');
+    }
+
+    const resetSearch = () => {
+        if (currentState === 'default') return;
+        getBooksList();
     }
 
     const getBooksList = async () => {
         try {
             const response = await getBooks();
             setBooksList(response.data.items);
+            setCurrent('default');
         } catch(error) {
             console.log(error)
         }
@@ -41,16 +46,23 @@ const MainPage = () => {
                 authors: item.volumeInfo.authors,
                 imageLinks: item.volumeInfo.imageLinks,
                 title: item.volumeInfo.title,
-                averageRating: item.volumeInfo.averageRating,
-                categories: item.volumeInfo.categories
+                averageRating: (item.volumeInfo.averageRating !== undefined) ? item.volumeInfo.averageRating : 0,
+                categories: item.volumeInfo.categories,
+                ratingsCount: (item.volumeInfo.ratingsCount !== undefined) ? item.volumeInfo.ratingsCount : 0
             }
         } as Books));
-        setBooks(newData);
+        setBooks(newData.sort(
+            (a: Books, b: Books) => {
+                return b.volumeInfo.ratingsCount - a.volumeInfo.ratingsCount
+            }
+        ));
+        console.log('aa')
+        console.log(books);
     }
 
     return (
         <>
-            <HeadBar searchHandler={_handleKeyDown} />
+            <HeadBar searchHandler={handleSearch} resetSearch={resetSearch} />
             <div className={styles.bookListContainer}>
                 {books.map((book, ind) => {
                     return (
