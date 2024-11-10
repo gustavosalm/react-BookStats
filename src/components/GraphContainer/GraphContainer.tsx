@@ -1,6 +1,13 @@
 import styles from './GraphContainer.module.css';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { Paper } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { getBooksByCategory } from '../../services/booksService';
+
+interface CategoryData {
+    rating: number,
+    category: string
+}
 
 const chartSetting = {
     xAxis: [
@@ -11,7 +18,7 @@ const chartSetting = {
         },
     ],
     width: 320,
-    height: 500,
+    height: 450,
     slotProps: {
         legend: {
             hidden: true
@@ -19,34 +26,50 @@ const chartSetting = {
     }
 };
 
-export const datapreset = [
-    {
-      rating: 3.5,
-      category: 'Fiction',
-    },
-    {
-      rating: 2,
-      category: 'Drama',
-    },
-    {
-      rating: 4,
-      category: 'Thriller',
-    },
-    {
-      rating: 3,
-      category: 'Poetry',
-    }
-]
-
 const GraphContainer = () => {
+    const [categories, setCategories] = useState(['Fiction', 'Drama', 'Thriller', 'Poetry']);
+    const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+    
+    useEffect(() => {
+        getCategoriesData();
+    }, [categories]);
+
+    const getCategoriesData = async () => {
+        let dataHelper: CategoryData[] = [];
+        for(const category of categories) {
+            const response = await getBooksByCategory(category);
+            let counter = 0;
+            response.data.items.forEach((book: any) => {
+                if(book.volumeInfo.averageRating != undefined)
+                    counter += book.volumeInfo.averageRating;
+            });
+            dataHelper.push({
+                rating: (counter / response.data.items.length),
+                category: category
+            });
+            console.log(category);
+        }
+        console.log(dataHelper);
+        setCategoryData(dataHelper);
+    }
 
     return (
-        <Paper className={styles.graphsPaper}>
+        <Paper
+            sx={{ 
+                display: 'flex',
+                justifyContent: 'flex-end',
+                flexDirection: 'column',
+                alignItems: 'center',
+                backgroundColor: '#f8f8f8'
+            }}
+            className={styles.graphsPaper}
+        >
             <BarChart
+                loading={categoryData.length === 0}
                 className={styles.graph}
-                dataset={datapreset}
+                dataset={categoryData}
                 yAxis={[{ scaleType: 'band', dataKey: 'category' }]}
-                series={[{ dataKey: 'rating', label: 'Média de avaliação', color: '#ff0000' }]}
+                series={[{ dataKey: 'rating', label: 'Média de avaliação', color: '#ababab' }]}
                 layout="horizontal"
                 grid={{ vertical: true }}
                 {...chartSetting}
