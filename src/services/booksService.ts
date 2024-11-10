@@ -5,8 +5,9 @@ const api = axios.create({
 });
 
 export const getBooks = async () => {
-    let url = 'volumes?q=subject:fiction+subject:drama';
+    let url = 'volumes?q=subject:Fiction&maxResults=40&printType=books&orderBy=relevance&language=en';
     const response = await api.get(url);
+    console.log(response);
 
     return response;
 }
@@ -20,6 +21,13 @@ export const getBooksByTitle = async (title: string) => {
 
 export const getBooksByAuthor = async (author: string) => {
     let url = `volumes?q=inauthor:"${author.replace(' ', '+')}"`;
+    const response = await api.get(url);
+
+    return response;
+}
+
+export const getBooksByCategory = async (category: string) => {
+    let url = `volumes?q=insubject:"${category}"maxResults=30&printType=books&orderBy=relevance`;
     const response = await api.get(url);
 
     return response;
