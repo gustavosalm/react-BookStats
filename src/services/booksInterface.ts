@@ -9,5 +9,6 @@ export interface Books {
         title: string;
         averageRating: number;
         categories: string[];
+        ratingsCount: number;
     }
 }
