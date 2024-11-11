@@ -50,10 +50,12 @@ const GraphContainer = () => {
         for(const category of categories) {
             const response = await getBooksByCategory(category);
             let counter = 0;
+            let amount = 0;
             response.data.items.forEach((book: any) => {
                 const bInfo = book.volumeInfo;
                 if(bInfo.averageRating != undefined) {
                     counter += bInfo.averageRating;
+                    amount++;
                     const year = bInfo.publishedDate.slice(0, 4);
                     yearTotalRating.set(
                         year,
@@ -66,7 +68,7 @@ const GraphContainer = () => {
                 }
             });
             dataHelper.push({
-                rating: (counter / response.data.items.length),
+                rating: (counter / amount),
                 category: category
             });
         }
