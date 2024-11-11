@@ -16,7 +16,7 @@ const BasePizzaChart: React.FC<PizzaChartProps> = ({dataset}) => {
                     faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                 },
             ]}
-            height={250}
+            height={200}
             slotProps={{ legend: { hidden: true }}}
         />
     )

@@ -25,7 +25,7 @@ const verticalChartSetting = {
         },
     ],
     width: 450,
-    height: 250,
+    height: 200,
     slotProps: {
         legend: {
             hidden: true

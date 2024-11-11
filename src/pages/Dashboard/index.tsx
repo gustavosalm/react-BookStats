@@ -32,11 +32,15 @@ const Dashboard = () => {
     const [yearRatingData, setYearRatingData] = useState<YearRatingData[]>([]);
     const [yearAmountData, setYearAmountData] = useState<PizzaChartData[]>([]);
     const [categoryAmountData, setCategoryAmountData] = useState<PizzaChartData[]>([]);
-    const [filters, setFilters] = useState<Filters>({author: '', title: '', category: ['Fiction']});
+    const [filters, setFilters] = useState<Filters>({author: '', title: '', category: ['']});
 
     useEffect(() => {
         getGraphsData();
     }, [filters]);
+
+    const changeFilters = (author: string, title: string, category: string[]) => {
+        setFilters({author, title, category: [...category, '']});
+    }
 
     const getGraphsData = async () => {
         let dataHelper: CategoryData[] = [];
@@ -109,26 +113,30 @@ const Dashboard = () => {
             height: '100vh'
         }}>
             <Grid2 size={8} offset={2}>
-                <FilterBar />
+                <FilterBar passFilters={changeFilters} />
             </Grid2>
             <Grid2 container size={8} offset={2} spacing={2} sx={{marginTop: 2}}>
                 <Grid2 size={6}>
-                    <Paper>
+                    <Paper sx={{padding: '.75rem 1rem'}}>
+                        <p className={styles.graphTitle}>Avaliação média por categoria</p>
                         <BaseBarChart dataset={categoryData} axisDataKey={'category'} seriesDataKey={'rating'} vertical />
                     </Paper>
                 </Grid2>
                 <Grid2 size={6}>
-                    <Paper>
+                    <Paper sx={{padding: '.75rem 1rem'}}>
+                        <p className={styles.graphTitle}>Quantidade por categoria</p>
                         <BasePizzaChart dataset={categoryAmountData} />
                     </Paper>
                 </Grid2>
                 <Grid2 size={6}>
-                    <Paper>
+                    <Paper sx={{padding: '.75rem 1rem'}}>
+                        <p className={styles.graphTitle}>Avaliação média por ano</p>
                         <BaseBarChart dataset={yearRatingData} axisDataKey={'year'} seriesDataKey={'rating'} vertical />
                     </Paper>
                 </Grid2>
                 <Grid2 size={6}>
-                    <Paper>
+                    <Paper sx={{padding: '.75rem 1rem'}}>
+                        <p className={styles.graphTitle}>Quantidade por ano</p>
                         <BasePizzaChart dataset={yearAmountData} />
                     </Paper>
                 </Grid2>

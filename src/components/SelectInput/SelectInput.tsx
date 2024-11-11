@@ -4,16 +4,20 @@ import { Checkbox, ListItemText, MenuItem, OutlinedInput, Select, SelectChangeEv
 
 type SelectProps = {
     optionList: string[],
-    placeholder?: string
+    placeholder?: string,
+    selectedChange: (val: string[]) => void
 }
 
-const SelectInput: React.FC<SelectProps> = ({optionList, placeholder = ''}) => {
+const SelectInput: React.FC<SelectProps> = ({optionList, placeholder = '', selectedChange}) => {
     const [selecCategory, setSelecCategory] = useState<string[]>([]);
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const { target: { value } } = event;
         setSelecCategory(
           typeof value === 'string' ? value.split(',') : value
+        );
+        selectedChange(
+            typeof value === 'string' ? value.split(',') : value
         );
     };
 
