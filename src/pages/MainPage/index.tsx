@@ -5,6 +5,7 @@ import { Books } from '../../services/booksInterface';
 import BookInfo from '../../components/BookInfo/BookInfo';
 import styles from './styles.module.css'
 import GraphContainer from '../../components/GraphContainer/GraphContainer';
+import { Grid2 } from '@mui/material';
 
 const MainPage = () => {
     const [books, setBooks] = useState<Books[]>([]);
@@ -64,14 +65,18 @@ const MainPage = () => {
     return (
         <>
             <HeadBar searchHandler={handleSearch} resetSearch={resetSearch} />
-            <div className={styles.bookListContainer}>
-                {books.map((book, ind) => {
-                    return (
-                        <BookInfo key={ind} book={book} />
-                    )
-                })}
-                <GraphContainer />
-            </div>
+            <Grid2 container sx={{padding: '.5rem 0'}}>
+                <Grid2 size={8} className={styles.bookListContainer}>
+                    {books.map((book, ind) => {
+                        return (
+                            <BookInfo key={ind} book={book} />
+                        )
+                    })}
+                </Grid2>
+                <Grid2 size={4}>
+                    <GraphContainer />
+                </Grid2>
+            </Grid2>
         </>
     )
 }

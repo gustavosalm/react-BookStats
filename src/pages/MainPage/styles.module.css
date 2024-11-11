@@ -1,5 +1,23 @@
 .bookListContainer {
     overflow-y: scroll;
-    max-height: calc(100vh - 5rem);
+    max-height: calc(100vh - 6rem);
     position: relative;
+}
+
+.bookListContainer::-webkit-scrollbar {
+    width: .5rem;
+}
+
+.bookListContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: .25rem;
+}
+
+.bookListContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: .25rem;
+}
+
+.bookListContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

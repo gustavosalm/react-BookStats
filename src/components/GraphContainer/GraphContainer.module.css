@@ -1,10 +1,9 @@
 .graphsPaper {
-    position: fixed;
-    right: 2rem;
-    top: 6rem;
-    height: calc(100vh - 8rem);
-    width: 25%;
+    position: relative;
+    height: calc(100% - 2rem);
+    width: calc(100% - 4rem);
     padding: .5rem 1rem;
+    margin: .5rem 1rem;
 }
 
 .buttonContainers {

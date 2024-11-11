@@ -57,7 +57,7 @@ const BaseBarChart: React.FC<BarChartProps> = ({dataset, axisDataKey, seriesData
                     loading={dataset.length === 0}
                     dataset={dataset}
                     yAxis={[{ scaleType: 'band', dataKey: axisDataKey }]}
-                    series={[{ dataKey: seriesDataKey, label: 'Média de avaliação', color: '#ababab' }]}
+                    series={[{ dataKey: seriesDataKey, label: 'Média de avaliação', color: '#6fb4d4' }]}
                     layout="horizontal"
                     grid={{ vertical: true }}
                     {...chartSetting}
