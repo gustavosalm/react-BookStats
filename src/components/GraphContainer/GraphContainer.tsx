@@ -1,6 +1,8 @@
 import styles from './GraphContainer.module.css';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { Paper } from '@mui/material';
+import { IconButton, Paper, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AbcSharpIcon from '@mui/icons-material/AbcSharp';
 import { useEffect, useState } from 'react';
 import { getBooksByCategory } from '../../services/booksService';
 
@@ -9,10 +11,14 @@ interface CategoryData {
     category: string
 }
 
+interface YearData {
+    rating: number,
+    year: string
+}
+
 const chartSetting = {
     xAxis: [
         {
-            label: 'Avaliações por gênero',
             min: 0,
             max: 5,
         },
@@ -29,28 +35,50 @@ const chartSetting = {
 const GraphContainer = () => {
     const [categories, setCategories] = useState(['Fiction', 'Drama', 'Thriller', 'Poetry']);
     const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+    const [yearData, setYeatData] = useState<YearData[]>([]);
     
     useEffect(() => {
-        getCategoriesData();
+        getGraphsData();
     }, [categories]);
 
-    const getCategoriesData = async () => {
+    const getGraphsData = async () => {
         let dataHelper: CategoryData[] = [];
+        let yearDataHelper: YearData[] = [];
+        let yearTotalRating: Map<string, number> = new Map([]);
+        let yearAppearances: Map<string, number> = new Map([]);
+
         for(const category of categories) {
             const response = await getBooksByCategory(category);
             let counter = 0;
             response.data.items.forEach((book: any) => {
-                if(book.volumeInfo.averageRating != undefined)
-                    counter += book.volumeInfo.averageRating;
+                const bInfo = book.volumeInfo;
+                if(bInfo.averageRating != undefined) {
+                    counter += bInfo.averageRating;
+                    const year = bInfo.publishedDate.slice(0, 4);
+                    yearTotalRating.set(
+                        year,
+                        (yearTotalRating.get(year) || 0) + bInfo.averageRating
+                    );
+                    yearAppearances.set(
+                        year,
+                        (yearAppearances.get(year) || 0) + 1
+                    );
+                }
             });
             dataHelper.push({
                 rating: (counter / response.data.items.length),
                 category: category
             });
-            console.log(category);
         }
-        console.log(dataHelper);
+        yearTotalRating.forEach((rating, year) => {
+            yearDataHelper.push({
+                rating: (rating / (yearAppearances.get(year) || 1)),
+                year: year
+            });
+        });
+        yearDataHelper = yearDataHelper.sort((a, b) => { return ((+a.year) - (+b.year)) });
         setCategoryData(dataHelper);
+        setYeatData(yearDataHelper);
     }
 
     return (

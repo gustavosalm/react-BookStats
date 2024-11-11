@@ -7,5 +7,9 @@
     padding: .5rem 1rem;
 }
 
-/* .graph {
-} */
+.buttonContainers {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding-top: .5rem;
+}
