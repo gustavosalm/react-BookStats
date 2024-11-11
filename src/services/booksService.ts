@@ -32,3 +32,19 @@ export const getBooksByCategory = async (category: string) => {
 
     return response;
 }
+
+export const getBooksWithFilters = async (category: string, author: string, title: string) => {
+    if (category === '' && author === '' && title === '') return null;
+    let url = `
+        volumes?q=
+        ${(category !== '') ? ('subject:' + category) : '' }
+        ${(category !== '' && (author !== '' || title !== '')) ? '+' : ''}
+        ${(author !== '') ? ('inauthor:' + author) : '' }
+        ${(title !== '' && (category !== '' || author !== '')) ? '+' : ''}
+        ${(title !== '') ? ('intitle:' + title) : '' }
+        &maxResults=30&printType=books&orderBy=relevance
+    `
+    const response = await api.get(url);
+
+    return response;
+}
