@@ -36,10 +36,15 @@ const GraphContainer = () => {
     const [categories, setCategories] = useState(['Fiction', 'Drama', 'Thriller', 'Poetry']);
     const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
     const [yearData, setYeatData] = useState<YearData[]>([]);
+    const [currentGraph, setCurrentGraph] = useState('category');
     
     useEffect(() => {
         getGraphsData();
     }, [categories]);
+
+    const handleChange = (e: React.MouseEvent<HTMLElement>, newGraph: string) => {
+        setCurrentGraph(newGraph);
+    }
 
     const getGraphsData = async () => {
         let dataHelper: CategoryData[] = [];
@@ -94,11 +99,29 @@ const GraphContainer = () => {
             }}
             className={styles.graphsPaper}
         >
+            <div className={styles.buttonContainers}>
+                <ToggleButtonGroup
+                    value={currentGraph}
+                    exclusive
+                    onChange={handleChange}
+                >
+                    <Tooltip title='Média por categoria'>
+                        <ToggleButton value="category">
+                            <AbcSharpIcon />
+                        </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title='Média por ano'>
+                        <ToggleButton value="year">
+                            <CalendarMonthIcon />
+                        </ToggleButton>
+                    </Tooltip>
+                </ToggleButtonGroup>
+            </div>
             <BarChart
                 loading={categoryData.length === 0}
                 className={styles.graph}
-                dataset={categoryData}
-                yAxis={[{ scaleType: 'band', dataKey: 'category' }]}
+                dataset={(currentGraph === 'category' ? categoryData : yearData)}
+                yAxis={[{ scaleType: 'band', dataKey: currentGraph }]}
                 series={[{ dataKey: 'rating', label: 'Média de avaliação', color: '#ababab' }]}
                 layout="horizontal"
                 grid={{ vertical: true }}
