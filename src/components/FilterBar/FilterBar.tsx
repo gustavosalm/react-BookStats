@@ -13,7 +13,10 @@ const categories = [
 const FilterBar = () => {
 
     return (
-        <Paper>
+        <Paper sx={{ 
+            backgroundColor: '#f8f8f8',
+            padding: '.5rem'
+        }}>
             <SelectInput optionList={categories} placeholder='Filtrar Categorias' />
             <OutlinedInput
                     sx={{ ml: 1, flex: 1 }}

@@ -5,7 +5,9 @@ import FilterBar from '../../components/FilterBar/FilterBar';
 const Dashboard = () => {
 
     return (
-        <Grid2 container>
+        <Grid2 container sx={{ 
+            marginTop: '1rem'
+        }}>
             <Grid2 size={8} offset={2}>
                 <FilterBar />
             </Grid2>
