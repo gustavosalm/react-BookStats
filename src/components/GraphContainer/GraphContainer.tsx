@@ -5,6 +5,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AbcSharpIcon from '@mui/icons-material/AbcSharp';
 import { useEffect, useState } from 'react';
 import { getBooksByCategory } from '../../services/booksService';
+import BaseBarChart from '../BaseBarChart/BaseBarChart';
 
 interface CategoryData {
     rating: number,
@@ -15,22 +16,6 @@ interface YearData {
     rating: number,
     year: string
 }
-
-const chartSetting = {
-    xAxis: [
-        {
-            min: 0,
-            max: 5,
-        },
-    ],
-    width: 320,
-    height: 450,
-    slotProps: {
-        legend: {
-            hidden: true
-        }
-    }
-};
 
 const GraphContainer = () => {
     const [categories, setCategories] = useState(['Fiction', 'Drama', 'Thriller', 'Poetry']);
@@ -117,7 +102,8 @@ const GraphContainer = () => {
                     </Tooltip>
                 </ToggleButtonGroup>
             </div>
-            <BarChart
+            <BaseBarChart dataset={(currentGraph === 'category' ? categoryData : yearData)} axisDataKey={currentGraph} seriesDataKey={'rating'} />
+            {/* <BarChart
                 loading={categoryData.length === 0}
                 className={styles.graph}
                 dataset={(currentGraph === 'category' ? categoryData : yearData)}
@@ -126,7 +112,7 @@ const GraphContainer = () => {
                 layout="horizontal"
                 grid={{ vertical: true }}
                 {...chartSetting}
-            />
+            /> */}
         </Paper>
     )
 }
