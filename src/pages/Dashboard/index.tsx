@@ -1,10 +1,12 @@
-import { Grid2, Paper, Skeleton } from '@mui/material';
+import { Grid2, IconButton, Paper, Tooltip } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styles from './styles.module.css';
 import FilterBar from '../../components/FilterBar/FilterBar';
 import { useEffect, useState } from 'react';
 import BaseBarChart from '../../components/BaseBarChart/BaseBarChart';
 import { getBooksByCategory, getBooksWithFilters } from '../../services/booksService';
 import BasePizzaChart from '../../components/BasePizzaChart/BasePizzaChart';
+import { Link } from 'react-router-dom';
 
 interface CategoryData {
     rating: number,
@@ -112,7 +114,16 @@ const Dashboard = () => {
             alignContent: 'center',
             height: '100vh'
         }}>
-            <Grid2 size={8} offset={2}>
+            <Grid2 size={1} sx={{display: 'flex', justifyContent: 'center'}}>
+                <Link to="/">
+                    <Tooltip title="Voltar para página principal">
+                        <IconButton>
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Link>
+            </Grid2>
+            <Grid2 size={8} offset={1}>
                 <FilterBar passFilters={changeFilters} />
             </Grid2>
             <Grid2 container size={8} offset={2} spacing={2} sx={{marginTop: 2}}>

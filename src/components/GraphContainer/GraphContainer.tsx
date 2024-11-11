@@ -1,11 +1,12 @@
 import styles from './GraphContainer.module.css';
-import { BarChart } from '@mui/x-charts/BarChart';
 import { IconButton, Paper, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AbcSharpIcon from '@mui/icons-material/AbcSharp';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { useEffect, useState } from 'react';
 import { getBooksByCategory } from '../../services/booksService';
 import BaseBarChart from '../BaseBarChart/BaseBarChart';
+import { Link } from 'react-router-dom';
 
 interface CategoryData {
     rating: number,
@@ -85,6 +86,13 @@ const GraphContainer = () => {
             className={styles.graphsPaper}
         >
             <div className={styles.buttonContainers}>
+                <Link to="/dashboard">
+                    <Tooltip title='Abrir dashboard'>
+                        <IconButton>
+                            <FullscreenIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Link>
                 <ToggleButtonGroup
                     value={currentGraph}
                     exclusive
