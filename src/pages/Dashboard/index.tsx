@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import FilterBar from '../../components/FilterBar/FilterBar';
 import { useEffect, useState } from 'react';
 import BaseBarChart from '../../components/BaseBarChart/BaseBarChart';
-import { getBooksByCategory } from '../../services/booksService';
+import { getBooksByCategory, getBooksWithFilters } from '../../services/booksService';
 import BasePizzaChart from '../../components/BasePizzaChart/BasePizzaChart';
 
 interface CategoryData {
@@ -32,7 +32,7 @@ const Dashboard = () => {
     const [yearRatingData, setYearRatingData] = useState<YearRatingData[]>([]);
     const [yearAmountData, setYearAmountData] = useState<PizzaChartData[]>([]);
     const [categoryAmountData, setCategoryAmountData] = useState<PizzaChartData[]>([]);
-    const [filters, setFilters] = useState<Filters>({author: '', title: '', category: []});
+    const [filters, setFilters] = useState<Filters>({author: '', title: '', category: ['Fiction']});
 
     useEffect(() => {
         getGraphsData();
@@ -48,10 +48,11 @@ const Dashboard = () => {
         let catAppearances: Map<string, number> = new Map([]);
 
         for(const category of filters.category) {
-            const response = await getBooksByCategory(category);
+            if(filters.author === '' && filters.title === '' && category === '') return;
+            const response = await getBooksWithFilters(category, filters.author, filters.title);
             let counter = 0;
             let amount = 0;
-            response.data.items.forEach((book: any) => {
+            response?.data.items.forEach((book: any) => {
                 const bInfo = book.volumeInfo;
                 if(bInfo.averageRating != undefined) {
                     counter += bInfo.averageRating;
@@ -70,10 +71,12 @@ const Dashboard = () => {
                     });
                 }
             });
-            dataHelper.push({
-                rating: (counter / amount),
-                category: category
-            });
+            if(category !== ''){
+                dataHelper.push({
+                    rating: (counter / amount),
+                    category: category
+                });
+            }
         }
         yearAppearances.forEach((appearances, year) => {
             yearDataHelper.push({
