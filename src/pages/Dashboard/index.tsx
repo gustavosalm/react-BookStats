@@ -54,7 +54,7 @@ const Dashboard = () => {
         let catAppearances: Map<string, number> = new Map([]);
 
         for(const category of filters.category) {
-            if(filters.author === '' && filters.title === '' && category === '') return;
+            if(filters.author === '' && filters.title === '' && category === '') continue;
             const response = await getBooksWithFilters(category, filters.author, filters.title);
             let counter = 0;
             let amount = 0;
@@ -128,25 +128,25 @@ const Dashboard = () => {
             </Grid2>
             <Grid2 container size={8} offset={2} spacing={2} sx={{marginTop: 2}}>
                 <Grid2 size={6}>
-                    <Paper sx={{padding: '.75rem 1rem'}}>
+                    <Paper sx={{padding: '.75rem 1rem', height: '30vh'}}>
                         <p className={styles.graphTitle}>Avaliação média por categoria</p>
                         <BaseBarChart dataset={categoryData} axisDataKey={'category'} seriesDataKey={'rating'} vertical />
                     </Paper>
                 </Grid2>
                 <Grid2 size={6}>
-                    <Paper sx={{padding: '.75rem 1rem'}}>
+                    <Paper sx={{padding: '.75rem 1rem', height: '30vh'}}>
                         <p className={styles.graphTitle}>Quantidade por categoria</p>
                         <BasePizzaChart dataset={categoryAmountData} />
                     </Paper>
                 </Grid2>
                 <Grid2 size={6}>
-                    <Paper sx={{padding: '.75rem 1rem'}}>
+                    <Paper sx={{padding: '.75rem 1rem', height: '30vh'}}>
                         <p className={styles.graphTitle}>Avaliação média por ano</p>
                         <BaseBarChart dataset={yearRatingData} axisDataKey={'year'} seriesDataKey={'rating'} vertical />
                     </Paper>
                 </Grid2>
                 <Grid2 size={6}>
-                    <Paper sx={{padding: '.75rem 1rem'}}>
+                    <Paper sx={{padding: '.75rem 1rem', height: '30vh'}}>
                         <p className={styles.graphTitle}>Quantidade por ano</p>
                         <BasePizzaChart dataset={yearAmountData} />
                     </Paper>

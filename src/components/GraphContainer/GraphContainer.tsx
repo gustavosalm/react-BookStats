@@ -110,17 +110,11 @@ const GraphContainer = () => {
                     </Tooltip>
                 </ToggleButtonGroup>
             </div>
-            <BaseBarChart dataset={(currentGraph === 'category' ? categoryData : yearData)} axisDataKey={currentGraph} seriesDataKey={'rating'} />
-            {/* <BarChart
-                loading={categoryData.length === 0}
-                className={styles.graph}
+            <BaseBarChart
                 dataset={(currentGraph === 'category' ? categoryData : yearData)}
-                yAxis={[{ scaleType: 'band', dataKey: currentGraph }]}
-                series={[{ dataKey: 'rating', label: 'Média de avaliação', color: '#ababab' }]}
-                layout="horizontal"
-                grid={{ vertical: true }}
-                {...chartSetting}
-            /> */}
+                axisDataKey={currentGraph}
+                seriesDataKey={'rating'}
+            />
         </Paper>
     )
 }
