@@ -8,29 +8,40 @@ import GraphContainer from '../../components/GraphContainer/GraphContainer';
 import { Grid2 } from '@mui/material';
 
 const MainPage = () => {
-    const [books, setBooks] = useState<Books[]>([]);
     const [filter, setFilter] = useState('');
-    const [currentState, setCurrent] = useState('');
+    const [books, setBooks] = useState<Books[]>([]);    // Lista de livros a serem exibidos
+    const [currentState, setCurrent] = useState('');    // Se uma busca foi feita ou não
     
     useEffect(() => {
         getBooksList();
     }, [filter]);
 
+    // Realiza a busca pelo filtro de pesquisa e exibe na lista de livros
     const handleSearch = async (searchText: string) => {
-        if (searchText === '')
+        // Se uma busca for feita com o texto vazio e estiver exibindo o resultado
+        // de uma busca, ele volta a exibir os resultados padrão que mostra no começo
+        if (searchText === '' && currentState === 'search'){
             getBooksList();
-        const titleResponse = await getBooksByTitle(searchText);
-        const authorResponse = await getBooksByAuthor(searchText);
+            return;
+        }
+        const titleResponse = await getBooksByTitle(searchText);    // Busca os livros por título
+        const authorResponse = await getBooksByAuthor(searchText);  // Busca os livros pelo autor
+
+        // Junta ambas as listas em uma só para serem exibidas
         const fullList = titleResponse.data.items.concat(authorResponse.data.items);
         setBooksList(fullList);
+
+        // Muda o estado para que está exibindo o resultado de uma busca
         setCurrent('search');
     }
 
+    // Reseta os livros exibidos para o estado padrão se estiver exibindo o resultado de uma busca
     const resetSearch = () => {
         if (currentState === 'default') return;
         getBooksList();
     }
 
+    // Faz uma chamada a API com o filtro padrão definido no service e exibe na lista
     const getBooksList = async () => {
         try {
             const response = await getBooks();
@@ -41,7 +52,9 @@ const MainPage = () => {
         }
     }
 
+    // Pega os livros resultantes de uma busca, ordena-os e exibe na lista de livros
     const setBooksList = (responseItems: any) => {
+        // Filtra somente os atributos que são úteis para a exibição
         const newData = responseItems.map((item: any) => ({
             id: item.id,
             volumeInfo: {
@@ -53,13 +66,13 @@ const MainPage = () => {
                 ratingsCount: (item.volumeInfo.ratingsCount !== undefined) ? item.volumeInfo.ratingsCount : 0
             }
         } as Books));
+
+        // Ordena os livros baseado na quantidade de avaliações
         setBooks(newData.sort(
             (a: Books, b: Books) => {
                 return b.volumeInfo.ratingsCount - a.volumeInfo.ratingsCount
             }
         ));
-        console.log('aa')
-        console.log(books);
     }
 
     return (

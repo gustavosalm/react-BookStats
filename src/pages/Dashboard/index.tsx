@@ -4,25 +4,29 @@ import styles from './styles.module.css';
 import FilterBar from '../../components/FilterBar/FilterBar';
 import { useEffect, useState } from 'react';
 import BaseBarChart from '../../components/BaseBarChart/BaseBarChart';
-import { getBooksByCategory, getBooksWithFilters } from '../../services/booksService';
+import { getBooksWithFilters } from '../../services/booksService';
 import BasePizzaChart from '../../components/BasePizzaChart/BasePizzaChart';
 import { Link } from 'react-router-dom';
 
+// Tipo dos dados do gráfico que exibe nota média por gênero
 interface CategoryData {
     rating: number,
     category: string
 }
 
+// Tipo dos dados do gráfico que exibe nota média por ano
 interface YearRatingData {
     rating: number,
     year: string
 }
 
+// Tipo dos dados dos gráficos de pizza
 interface PizzaChartData {
     label: string,
     value: number
 }
 
+// Filtros de busca
 interface Filters {
     author: string,
     title: string,
@@ -30,34 +34,45 @@ interface Filters {
 }
 
 const Dashboard = () => {
-    const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
-    const [yearRatingData, setYearRatingData] = useState<YearRatingData[]>([]);
-    const [yearAmountData, setYearAmountData] = useState<PizzaChartData[]>([]);
-    const [categoryAmountData, setCategoryAmountData] = useState<PizzaChartData[]>([]);
+    const [categoryData, setCategoryData] = useState<CategoryData[]>([]);               // Dataset do gráfico que exibe nota média por gênero
+    const [yearRatingData, setYearRatingData] = useState<YearRatingData[]>([]);         // Dataset do gráfico que exibe nota média por ano
+    const [yearAmountData, setYearAmountData] = useState<PizzaChartData[]>([]);         // Dataset do gráfico que exibe quantidade de aparições do ano
+    const [categoryAmountData, setCategoryAmountData] = useState<PizzaChartData[]>([]); // Dataset do gráfico que exibe quantidade de aparições do gênero
+    
+    // Filtros dos gráficos exibidos (autor, título e gêneros)
+    // Sempre há uma string vazia no array de categorias
     const [filters, setFilters] = useState<Filters>({author: '', title: '', category: ['']});
 
+    // Executa sempre que os hook de filtros é alterados
     useEffect(() => {
         getGraphsData();
     }, [filters]);
 
+    // Recebe os valores inseridos nos inputs e salva no hook
     const changeFilters = (author: string, title: string, category: string[]) => {
         setFilters({author, title, category: [...category, '']});
     }
 
+    // Faz as requisições e trata os dados para que sejam armazenados
+    // de forma que possam ser exibidos pelos gráficos
     const getGraphsData = async () => {
-        let dataHelper: CategoryData[] = [];
-        let yearDataHelper: YearRatingData[] = [];
-        let yearAmountHelper: PizzaChartData[] = [];
-        let catAmountHelper: PizzaChartData[] = [];
-        let yearTotalRating: Map<string, number> = new Map([]);
-        let yearAppearances: Map<string, number> = new Map([]);
-        let catAppearances: Map<string, number> = new Map([]);
+        let dataHelper: CategoryData[] = [];            // Guarda os dados de nota média por gênero
+        let yearDataHelper: YearRatingData[] = [];      // Guarda os dados de nota média por ano
+        let yearAmountHelper: PizzaChartData[] = [];    // Guarda os dados de quantidade de aparições do ano
+        let catAmountHelper: PizzaChartData[] = [];     // Guarda os dados de quantidade de aparições do gênero
+        
+        let yearTotalRating: Map<string, number> = new Map([]); // Dicionário com a nota de cada ano
+        let yearAppearances: Map<string, number> = new Map([]); // Dicionário com a aparição de cada ano
+        let catAppearances: Map<string, number> = new Map([]);  // Dicionário com a aparição de cada categoria
 
         for(const category of filters.category) {
+            // Não faz a requisição se não houver filtros
             if(filters.author === '' && filters.title === '' && category === '') continue;
+
+            // Requisição que busca os livros pelos filtros recebidos
             const response = await getBooksWithFilters(category, filters.author, filters.title);
-            let counter = 0;
-            let amount = 0;
+            let counter = 0;    // Soma todas as notas de livros dessa categoria
+            let amount = 0;     // Conta quantos livros foram avaliados ao menos uma vez
             response?.data.items.forEach((book: any) => {
                 const bInfo = book.volumeInfo;
                 if(bInfo.averageRating != undefined) {
@@ -99,8 +114,12 @@ const Dashboard = () => {
                 label: cat,
                 value: appearances
             })
-        })
+        });
+
+        // Ordena pela ordem dos anos
         yearDataHelper = yearDataHelper.sort((a, b) => { return ((+a.year) - (+b.year)) });
+
+        // Salvar os dados que os gráficos vão receber
         setCategoryData(dataHelper);
         setYearRatingData(yearDataHelper);
         setYearAmountData(yearAmountHelper);

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ThemeContext } from "./context/index";
 
 function App() {
+  // Hook que salva o tema do site ('dark' | 'light')
   const [theme, setTheme] = useState('light');
   
   return (

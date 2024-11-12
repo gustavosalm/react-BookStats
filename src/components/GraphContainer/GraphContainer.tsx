@@ -32,16 +32,19 @@ const GraphContainer = () => {
         setCurrentGraph(newGraph);
     }
 
+    // Faz as requisições e trata os dados para que sejam armazenados
+    // de forma que possam ser exibidos pelos gráficos
     const getGraphsData = async () => {
-        let dataHelper: CategoryData[] = [];
-        let yearDataHelper: YearData[] = [];
-        let yearTotalRating: Map<string, number> = new Map([]);
-        let yearAppearances: Map<string, number> = new Map([]);
+        let dataHelper: CategoryData[] = [];    // Guarda os dados de nota média por gênero
+        let yearDataHelper: YearData[] = [];    // Guarda os dados de nota média por ano
+        let yearTotalRating: Map<string, number> = new Map([]); // Dicionário com a nota de cada ano
+        let yearAppearances: Map<string, number> = new Map([]); // Dicionário com a aparição de cada ano
 
         for(const category of categories) {
+            // Requisição que busca os livros pela categoria recebida
             const response = await getBooksByCategory(category);
-            let counter = 0;
-            let amount = 0;
+            let counter = 0;    // Soma todas as notas de livros dessa categoria
+            let amount = 0;     // Conta quantos livros foram avaliados ao menos uma vez
             response.data.items.forEach((book: any) => {
                 const bInfo = book.volumeInfo;
                 if(bInfo.averageRating != undefined) {
@@ -69,7 +72,11 @@ const GraphContainer = () => {
                 year: year
             });
         });
+
+        // Ordena pela ordem dos anos
         yearDataHelper = yearDataHelper.sort((a, b) => { return ((+a.year) - (+b.year)) });
+
+        // Salvar os dados que os gráficos vão receber
         setCategoryData(dataHelper);
         setYeatData(yearDataHelper);
     }
