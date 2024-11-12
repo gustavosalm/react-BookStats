@@ -1,4 +1,13 @@
 :root {
+  --text-color: rgba(0, 0, 0, 0.87);
+  --header-background: #e0e0e0;
+  --general-background: #ececec;
+  --scroll-background: #f1f1f1;
+  --graph-backgrond: #f8f8f8;
+
+  --category-border: #56879e;
+  --category-fill: #76adc7;
+
   margin: 0;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -6,22 +15,37 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  /* color: rgba(255, 255, 255, 0.87); */
-  /* background-color: #242424; */
   color: rgba(0, 0, 0, 0.87);
-  background-color: #ececec;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+}
+
+[data-theme="dark"] {
+  background-color: var(--general-background);
+  --header-background: #242424;
+  --text-color: rgba(255, 255, 255, 0.87);
+  --general-background: #353535;
+  --scroll-background: #222222;
+  --graph-backgrond: #222222;
+
+  --category-border: #0b232e;
+  --category-fill: #31454e;
 }
 
 body {
   margin: 0;
+  background-color: var(--general-background);
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+p, h1, h2, input, button {
+  color: var(--text-color) !important;
 }
