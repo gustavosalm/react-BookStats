@@ -65,7 +65,7 @@ const MainPage = () => {
     return (
         <>
             <HeadBar searchHandler={handleSearch} resetSearch={resetSearch} />
-            <Grid2 container sx={{padding: '.5rem 0'}}>
+            <Grid2 container sx={{padding: '.5rem 0'}} className={styles.mainGrid}>
                 <Grid2 size={8} className={styles.bookListContainer}>
                     {books.map((book, ind) => {
                         return (

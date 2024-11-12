@@ -1,6 +1,12 @@
+@import '../../global.css';
+
 .graphTitle {
     margin: 0;
     float: right;
     font-size: 1rem;
     line-height: 1rem;
+}
+
+.paperContainer {
+    background-color: var(--graph-backgrond) !important;
 }

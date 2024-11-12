@@ -80,8 +80,7 @@ const GraphContainer = () => {
                 display: 'flex',
                 justifyContent: 'flex-end',
                 flexDirection: 'column',
-                alignItems: 'center',
-                backgroundColor: '#f8f8f8'
+                alignItems: 'center'
             }}
             className={styles.graphsPaper}
         >

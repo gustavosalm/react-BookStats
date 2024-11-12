@@ -28,10 +28,10 @@ const FilterBar: React.FC<FilterBarProps> = ({ passFilters }) => {
     }
 
     return (
-        <Paper sx={{ 
-            backgroundColor: '#f8f8f8',
-            padding: '.5rem'
-        }}>
+        <Paper
+            sx={{ padding: '.5rem' }}
+            className={styles.paperContainer}
+        >
             <Grid2 container spacing={1}>
                 <Grid2 size={3}>
                     <SelectInput

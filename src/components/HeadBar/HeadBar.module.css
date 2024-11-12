@@ -1,11 +1,14 @@
+@import '../../global.css';
+
 .outerDiv {
-    background-color: #e0e0e0;
-    padding: 1rem 10rem;
-    display: flex;
-    justify-content: center;
+    /* background-color: #e0e0e0; */
+    background-color: var(--header-background);
+    padding: 1rem 1rem;
+    /* display: flex;
+    justify-content: center; */
     box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.2);
 }
 
-.searchInput {
-    /* width: 60%; */
+.paperContainer {
+    background-color: var(--general-background) !important;
 }
